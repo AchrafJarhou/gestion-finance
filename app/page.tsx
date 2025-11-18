@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 
 export default function Home() {
   return (
@@ -14,18 +15,18 @@ export default function Home() {
               notre application intuitive !
             </p>
             <div className="flex justify-center items-center">
-              <a
+              <Link
                 href={"/sign-in"}
                 className="btn btn-sm md:btn-md btn-outline btn-accent "
               >
                 se connecter
-              </a>
-              <a
+              </Link>
+              <Link
                 href={"/sign-up"}
                 className="btn btn-sm md:btn-md ml-2  btn-accent "
               >
                 s'inscrire
-              </a>
+              </Link>
             </div>
           </div>
         </div>
