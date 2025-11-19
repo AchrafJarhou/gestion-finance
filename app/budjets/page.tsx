@@ -2,6 +2,7 @@
 import React, { useState } from "react";
 import Wrapper from "../components/Wrapper";
 import { useUser } from "@clerk/nextjs";
+import EmojiPicker from "emoji-picker-react";
 
 const page = () => {
   const { user } = useUser();
@@ -18,7 +19,7 @@ const page = () => {
           ).showModal()
         }
       >
-        open modal
+        Nouveau budget
       </button>
       <dialog id="my_modal_3" className="modal">
         <div className="modal-box">
@@ -27,8 +28,28 @@ const page = () => {
               ✕
             </button>
           </form>
-          <h3 className="font-bold text-lg">Hello!</h3>
-          <p className="py-4">Press ESC key or click on ✕ button to close</p>
+          <h3 className="font-bold text-lg">creation d'un budjet</h3>
+          <p className="py-4">Permet de controler ces depenses facilement</p>
+          <div className="w-full flex flex-col">
+            <input
+              type="text"
+              value={budgetName}
+              placeholder="Nom du budget"
+              onChange={(e) => setBudgetName(e.target.value)}
+              className="input input-bordered mb-3"
+              required
+            />
+            <input
+              type="number"
+              value={budgetAmount}
+              placeholder="montant du budget"
+              onChange={(e) => setBudgetAmount(e.target.value)}
+              className="input input-bordered mb-3"
+              required
+            />
+            <EmojiPicker />
+            <button className="btn btn-accent">Ajouter budget</button>
+          </div>
         </div>
       </dialog>
     </Wrapper>
