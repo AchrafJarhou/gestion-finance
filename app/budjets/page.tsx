@@ -1,9 +1,15 @@
 "use client";
 import React from "react";
-import Navbar from "../components/Navbar";
+import Wrapper from "../components/Wrapper";
 
 const page = () => {
-  return <Navbar />;
+  return (
+    <Wrapper>
+      <div>
+        <h1>Page des budjets</h1>
+      </div>
+    </Wrapper>
+  );
 };
 
 export default page;
