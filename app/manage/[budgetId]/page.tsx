@@ -1,6 +1,8 @@
 "use client";
 import {
   addTransactionToBudget,
+  deleteBudget,
+  deleteTransaction,
   getTrasactionsByBudgetId,
 } from "@/app/actions";
 import BudgetItem from "@/app/components/BudgetItem";
@@ -71,6 +73,35 @@ const page = ({ params }: { params: Promise<{ budgetId: string }> }) => {
     }
   };
 
+  const handleDeleteBudget = async () => {
+    const comfirmed = window.confirm(
+      "Êtes-vous sûr de vouloir supprimer ce budget et toutes ses transactions associées ?"
+    );
+    if (comfirmed) {
+      try {
+        await deleteBudget(budgetId);
+      } catch (error) {
+        console.error("Erreur lors de la suppression du budget:", error);
+      }
+      redirect("/budgets");
+    }
+  };
+
+  const handleDeleteTransaction = async (transactionId: string) => {
+    const comfirmed = window.confirm(
+      "Êtes-vous sûr de vouloir supprimer cette transaction ?"
+    );
+    if (comfirmed) {
+      try {
+        await deleteTransaction(transactionId);
+        fetchBudgetData(budgetId);
+        setNotification("Dépense supprimée");
+      } catch (error) {
+        console.error("Erreur lors de la suppression du budget:", error);
+      }
+    }
+  };
+
   return (
     <Wrapper>
       {notification && (
@@ -81,9 +112,11 @@ const page = ({ params }: { params: Promise<{ budgetId: string }> }) => {
       )}
       {budget && (
         <div className="flex md:flex-row flex-col">
-          <div className="md:w-1/3">
+          <div className="md:w-1/3 sm:w-full p-4 border rounded-lg shadow-md">
             <BudgetItem budget={budget} enableHover={0} />
-            <button className="btn mt-4">supprimer le budget</button>
+            <button onClick={() => handleDeleteBudget()} className="btn mt-4">
+              supprimer le budget
+            </button>
             <div className="space-y-4 flex flex-col mt-4">
               <input
                 type="text"
@@ -148,7 +181,12 @@ const page = ({ params }: { params: Promise<{ budgetId: string }> }) => {
                         })}
                       </td>
                       <td>
-                        <button className="btn btn-sm">
+                        <button
+                          onClick={() =>
+                            handleDeleteTransaction(transaction.id)
+                          }
+                          className="btn btn-sm"
+                        >
                           <Trash className="w-4" />
                         </button>
                       </td>

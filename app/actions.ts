@@ -135,3 +135,47 @@ export async function addTransactionToBudget(
     throw error;
   }
 }
+// Supprimer un budget et ses transactions associées
+export const deleteBudget = async (budgetId: string) => {
+  try {
+    await prisma.transaction.deleteMany({
+      where: { budgetId },
+    });
+
+    await prisma.budget.delete({
+      where: {
+        id: budgetId,
+      },
+    });
+  } catch (error) {
+    console.error(
+      "Erreur lors de la suppression du budget et de ses transactions associées: ",
+      error
+    );
+    throw error;
+  }
+};
+// Supprimer une transaction
+export async function deleteTransaction(transactionId: string) {
+  try {
+    console.log(" id de la transact", transactionId);
+    const transaction = await prisma.transaction.findUnique({
+      where: {
+        id: transactionId,
+      },
+    });
+
+    if (!transaction) {
+      throw new Error("Transaction non trouvée.");
+    }
+
+    await prisma.transaction.delete({
+      where: {
+        id: transactionId,
+      },
+    });
+  } catch (error) {
+    console.error("Erreur lors de la suppression de la transaction:", error);
+    throw error;
+  }
+}
