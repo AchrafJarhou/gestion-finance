@@ -7,7 +7,9 @@ interface BudgetItemProps {
 }
 
 const BudgetItem: React.FC<BudgetItemProps> = ({ budget, enableHover }) => {
+  // recupere le nombre de trasations
   const transactionCount = budget.transactions ? budget.transactions.length : 0;
+  //   calculer le total des montants des transactions
   const totalTransactionAmount = budget.transactions
     ? budget.transactions.reduce(
         (sum, transaction) => sum + transaction.amount,
@@ -15,13 +17,14 @@ const BudgetItem: React.FC<BudgetItemProps> = ({ budget, enableHover }) => {
       )
     : 0;
 
+  // calculer le montant restant
   const remainingAmount = budget.amount - totalTransactionAmount;
-
+  // calculer la valeur de la barre de progression
   const progressValue =
     totalTransactionAmount > budget.amount
       ? 100
       : (totalTransactionAmount / budget.amount) * 100;
-
+  // appliquer la classe de hover si enableHover est vrai
   const hoverClasse =
     enableHover === 1 ? "hover:shadow-xl hover:border-accent" : "";
 

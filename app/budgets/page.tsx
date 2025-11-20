@@ -74,7 +74,7 @@ const page = () => {
 
   useEffect(() => {
     fetchBudgets();
-  }, [user?.primaryEmailAddress?.emailAddress]);
+  }, [user]);
 
   return (
     <Wrapper>

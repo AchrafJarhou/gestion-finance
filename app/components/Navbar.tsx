@@ -18,9 +18,11 @@ const Navbar = () => {
         (isSignedIn ? (
           <>
             <div className="flex justify-between items-center">
-              <div className="flex text-2xl items-center font-bold">
-                e <span className="text-accent">.Track</span>
-              </div>
+              <Link href={"/"}>
+                <div className="flex text-2xl items-center font-bold">
+                  e <span className="text-accent">.Track</span>
+                </div>
+              </Link>
 
               <div className="md:flex hidden">
                 <Link href={"/budgets"} className="btn">
