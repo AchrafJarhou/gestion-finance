@@ -54,7 +54,7 @@ const BudgetItem: React.FC<BudgetItemProps> = ({ budget, enableHover }) => {
 
       <div>
         <progress
-          className="progress progress-accent w-full mt-4"
+          className="progress progress-accent-500 w-full mt-4"
           value={progressValue}
           max="100"
         ></progress>

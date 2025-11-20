@@ -65,3 +65,73 @@ export async function getBudgetsByUser(email: string) {
     throw error;
   }
 }
+// Recuperer les transactions d'un budget
+export async function getTrasactionsByBudgetId(budgetId: string) {
+  try {
+    const budget = await prisma.budget.findUnique({
+      where: {
+        id: budgetId,
+      },
+      include: {
+        transactions: true,
+      },
+    });
+    if (!budget) {
+      throw new Error("Budget non trouvé.");
+    }
+
+    return budget;
+  } catch (error) {
+    console.error("Erreur lors de la récupération des transactions:", error);
+    throw error;
+  }
+}
+// Ajouter une transaction a un budget
+export async function addTransactionToBudget(
+  budgetId: string,
+  amount: number,
+  description: string
+) {
+  try {
+    const budget = await prisma.budget.findUnique({
+      where: {
+        id: budgetId,
+      },
+      include: {
+        transactions: true,
+      },
+    });
+
+    if (!budget) {
+      throw new Error("Budget non trouvé.");
+    }
+
+    const totalTransactions = budget.transactions.reduce((sum, transaction) => {
+      return sum + transaction.amount;
+    }, 0);
+
+    const totalWithNewTransaction = totalTransactions + amount;
+
+    if (totalWithNewTransaction > budget.amount) {
+      throw new Error(
+        "Le montant total des transactions dépasse le montant du budget."
+      );
+    }
+
+    const newTransaction = await prisma.transaction.create({
+      data: {
+        amount,
+        description,
+        emoji: budget.emoji,
+        budget: {
+          connect: {
+            id: budget.id,
+          },
+        },
+      },
+    });
+  } catch (error) {
+    console.error("Erreur lors de l'ajout de la transaction:", error);
+    throw error;
+  }
+}
