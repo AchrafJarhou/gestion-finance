@@ -22,13 +22,13 @@ export default function Home() {
             <div className="flex justify-center items-center">
               <Link
                 href={"/sign-in"}
-                className="btn btn-sm md:btn-md btn-outline  btn-accent "
+                className="btn btn-sm md:btn-md btn-outline  btn-warning "
               >
                 se connecter
               </Link>
               <Link
                 href={"/sign-up"}
-                className="btn btn-sm md:btn-md ml-2  btn-accent "
+                className="btn btn-sm md:btn-md ml-2  btn-warning "
               >
                 s'inscrire
               </Link>

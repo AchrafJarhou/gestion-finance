@@ -45,7 +45,7 @@ const BudgetItem: React.FC<BudgetItemProps> = ({ budget, enableHover }) => {
             </span>
           </div>
         </div>
-        <div className="text-xl font-bold text-accent">{budget.amount} €</div>
+        <div className="text-xl font-bold text-warning">{budget.amount} €</div>
       </div>
       <div className="flex justify-between items-center mt-4 text-gray-500 text-sm">
         <span>{totalTransactionAmount} € dépensés</span>
@@ -54,7 +54,7 @@ const BudgetItem: React.FC<BudgetItemProps> = ({ budget, enableHover }) => {
 
       <div>
         <progress
-          className="progress progress-accent-500 w-full mt-4"
+          className="progress progress-neutral w-full mt-4"
           value={progressValue}
           max="100"
         ></progress>

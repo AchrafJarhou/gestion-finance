@@ -20,7 +20,7 @@ const Navbar = () => {
             <div className="flex justify-between items-center">
               <Link href={"/"}>
                 <div className="flex text-2xl items-center font-bold">
-                  e <span className="text-accent">.Track</span>
+                  e <span className="text-warning">.Track</span>
                 </div>
               </Link>
 
