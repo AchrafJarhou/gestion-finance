@@ -2,7 +2,7 @@
 import { UserButton, useUser } from "@clerk/nextjs";
 import Link from "next/link";
 import React, { useEffect } from "react";
-import { checkAndAddUser } from "../action";
+import { checkAndAddUser } from "../actions";
 
 const Navbar = () => {
   const { isLoaded, isSignedIn, user } = useUser();
@@ -23,8 +23,8 @@ const Navbar = () => {
               </div>
 
               <div className="md:flex hidden">
-                <Link href={"/budjets"} className="btn">
-                  Mes budjets
+                <Link href={"/budgets"} className="btn">
+                  Mes budgets
                 </Link>
                 <Link href={"/dashboard"} className="btn mx-4">
                   Tableau de bord
@@ -37,8 +37,8 @@ const Navbar = () => {
             </div>
 
             <div className="md:hidden flex mt-2 justify-center">
-              <Link href={"/budjets"} className="btn btn-sm">
-                Mes budjets
+              <Link href={"/budgets"} className="btn btn-sm">
+                Mes budgets
               </Link>
               <Link href={"/dashboard"} className="btn mx-4 btn-sm">
                 Tableau de bord

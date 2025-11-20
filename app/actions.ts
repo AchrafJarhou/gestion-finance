@@ -49,3 +49,19 @@ export async function addBudget(
     throw error;
   }
 }
+// Recuperer les budgets d'un utilisateur
+export async function getBudgetsByUser(email: string) {
+  try {
+    const user = await prisma.user.findUnique({
+      where: { email },
+      include: { budgets: { include: { transactions: true } } },
+    });
+    if (!user) {
+      throw new Error("Utilisateur non trouve");
+    }
+    return user.budgets;
+  } catch (error) {
+    console.error("Erreur lors de la recuperation des budgets :", error);
+    throw error;
+  }
+}

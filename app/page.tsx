@@ -1,6 +1,8 @@
 import Image from "next/image";
 import Link from "next/link";
 import Navbar from "./components/Navbar";
+import BudgetItem from "./components/BudgetItem";
+import budgets from "./data";
 
 export default function Home() {
   return (
@@ -31,6 +33,14 @@ export default function Home() {
                 s'inscrire
               </Link>
             </div>
+
+            <ul className="grid md:grid-cols-3 mt-6 gap-4 md:min-w-[1200px]">
+              {budgets.map((budget) => (
+                <Link href={""} key={budget.id}>
+                  <BudgetItem budget={budget} enableHover={1}></BudgetItem>
+                </Link>
+              ))}
+            </ul>
           </div>
         </div>
       </div>
