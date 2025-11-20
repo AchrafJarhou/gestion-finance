@@ -7,7 +7,16 @@ export default {
     "./pages/**/*.{js,ts,jsx,tsx}",
   ],
   theme: {
-    extend: {},
+    extend: {
+      fontFamily: {
+        sans: [
+          "var(--font-poppins)",
+          "var(--font-geist-sans)",
+          "ui-sans-serif",
+          "system-ui",
+        ],
+      },
+    },
   },
   plugins: [daisyui],
   daisyui: { themes: ["light", "dark", "cupcake"] },
