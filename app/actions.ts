@@ -179,3 +179,71 @@ export async function deleteTransaction(transactionId: string) {
     throw error;
   }
 }
+// Recuperer les transactions d'un utilisateur pour une periode donnee
+export async function getTransactionsByEmailAndPeriod(
+  email: string,
+  period: string
+) {
+  try {
+    const now = new Date();
+    let dateLimit;
+
+    switch (period) {
+      case "last30":
+        dateLimit = new Date(now);
+        dateLimit.setDate(now.getDate() - 30);
+        break;
+      case "last90":
+        dateLimit = new Date(now);
+        dateLimit.setDate(now.getDate() - 90);
+        break;
+      case "last7":
+        dateLimit = new Date(now);
+        dateLimit.setDate(now.getDate() - 7);
+        break;
+      case "last365":
+        dateLimit = new Date(now);
+        dateLimit.setFullYear(now.getFullYear() - 1);
+        break;
+      default:
+        throw new Error("Période invalide.");
+    }
+
+    const user = await prisma.user.findUnique({
+      where: { email },
+      include: {
+        budgets: {
+          include: {
+            transactions: {
+              where: {
+                createdAt: {
+                  gte: dateLimit,
+                },
+              },
+              orderBy: {
+                createdAt: "desc",
+              },
+            },
+          },
+        },
+      },
+    });
+
+    if (!user) {
+      throw new Error("Utilisateur non trouvé.");
+    }
+
+    const transactions = user.budgets.flatMap((budjet) =>
+      budjet.transactions.map((transaction) => ({
+        ...transaction,
+        budgetName: budjet.name,
+        budgetId: budjet.id,
+      }))
+    );
+
+    return transactions;
+  } catch (error) {
+    console.error("Erreur lors de la récupération des transactions:", error);
+    throw error;
+  }
+}

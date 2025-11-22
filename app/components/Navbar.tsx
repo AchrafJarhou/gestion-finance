@@ -53,13 +53,13 @@ const Navbar = () => {
         ) : (
           <div className="flex items-center justify-between">
             <div className="flex text-2xl items-center font-bold">
-              e <span className="text-accent">.Track</span>
+              e <span className="text-warning">.Track</span>
             </div>
             <div className=" flex mt-2 justify-center">
               <Link href={"/sign-in"} className="btn btn-sm">
                 Se connecter
               </Link>
-              <Link href={"/sign-up"} className="btn mx-4 btn-sm btn-accent">
+              <Link href={"/sign-up"} className="btn mx-4 btn-sm btn-warning">
                 S'inscrire
               </Link>
             </div>

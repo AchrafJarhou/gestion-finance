@@ -22,12 +22,12 @@ const page = () => {
   const closeNotification = () => {
     setNotification("");
   };
-
+  // fonction pour selectionner un emoji
   const handleEmojiSelect = (emojiObject: { emoji: string }) => {
     setSelectedEmoji(emojiObject.emoji);
     setShowEmojiPicker(false);
   };
-
+  // fonction pour ajouter un budget
   const handleAddBudget = async () => {
     try {
       const amount = parseFloat(budgetAmount);
@@ -58,7 +58,7 @@ const page = () => {
       setNotification(`Erreur : ${error}`);
     }
   };
-
+  // fonction pour recuperer les budgets D'un utilisateur
   const fetchBudgets = async () => {
     if (user?.primaryEmailAddress?.emailAddress) {
       try {
@@ -71,7 +71,7 @@ const page = () => {
       }
     }
   };
-
+  // recuperer les budgets au chargement de la page
   useEffect(() => {
     fetchBudgets();
   }, [user]);
@@ -112,7 +112,7 @@ const page = () => {
               value={budgetName}
               placeholder="Nom du budget"
               onChange={(e) => setBudgetName(e.target.value)}
-              className="input input-bordered mb-3"
+              className="input input-bordered mb-3 focus:outline-none"
               required
             />
 
@@ -121,7 +121,7 @@ const page = () => {
               value={budgetAmount}
               placeholder="Montant"
               onChange={(e) => setBudgetAmount(e.target.value)}
-              className="input input-bordered mb-3"
+              className="input input-bordered mb-3 focus:outline-none"
               required
             />
 
@@ -129,7 +129,7 @@ const page = () => {
               className="btn mb-3 "
               onClick={() => setShowEmojiPicker(!showEmojiPicker)}
             >
-              {selectedEmoji || "sélectionnez un emoji 🫵"}
+              {selectedEmoji || `sélectionnez un emoji 👋`}
             </button>
 
             {showEmojiPicker && (
