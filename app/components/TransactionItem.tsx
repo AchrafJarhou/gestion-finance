@@ -9,7 +9,7 @@ const TransactionItem: React.FC<TransactionItemProps> = ({ transaction }) => {
     <li className="flex justify-between items-center">
       <div className="my-4">
         <button className="btn">
-          <div className="badge badge-accent">- {transaction.amount}</div>
+          <div className="badge badge-accent">- {transaction.amount} €</div>
         </button>
       </div>
       <div className="md:hidden flex flex-col items-end">
@@ -34,7 +34,9 @@ const TransactionItem: React.FC<TransactionItemProps> = ({ transaction }) => {
         })}
       </div>
       <div className="hidden md:flex">
-        <Link href={`/manage/${transaction.budgetId}`} className="btn">Voir plus</Link>
+        <Link href={`/manage/${transaction.budgetId}`} className="btn">
+          Voir plus
+        </Link>
       </div>
     </li>
   );
