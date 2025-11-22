@@ -6,8 +6,8 @@ interface TransactionItemProps {
 }
 const TransactionItem: React.FC<TransactionItemProps> = ({ transaction }) => {
   return (
-    <li className="flex justify-between items-center">
-      <div className="my-4">
+    <li className="flex justify-between items-center relative ">
+      <div className="my-4 flex-1">
         <button className="btn">
           <div className="badge badge-accent">- {transaction.amount} €</div>
         </button>
@@ -22,10 +22,10 @@ const TransactionItem: React.FC<TransactionItemProps> = ({ transaction }) => {
           })}
         </span>
       </div>
-      <div className="hidden md:flex">
+      <div className="hidden md:flex flex-1">
         <span className="font-bold text-sm ">{transaction.description}</span>
       </div>
-      <div className="hidden md:flex">
+      <div className="hidden md:flex flex-auto">
         {" "}
         {transaction.createdAt.toLocaleDateString("fr-FR")} à{" "}
         {transaction.createdAt.toLocaleTimeString("fr-FR", {
@@ -33,7 +33,7 @@ const TransactionItem: React.FC<TransactionItemProps> = ({ transaction }) => {
           minute: "2-digit",
         })}
       </div>
-      <div className="hidden md:flex">
+      <div className="hidden md:flex flex-1 absolute right-2">
         <Link href={`/manage/${transaction.budgetId}`} className="btn">
           Voir plus
         </Link>

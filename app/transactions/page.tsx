@@ -34,6 +34,19 @@ const page = () => {
 
   return (
     <Wrapper>
+      <div className="flex justify-end mb-5 ">
+        <select
+          className="input input-bordered input-md outline-none w-auto cursor-pointer"
+          defaultValue="last30"
+          onChange={(e) => fetchTransactions(e.target.value)}
+        >
+          <option value="last7">Derniers 7 jours</option>
+          <option value="last30">Derniers 30 jours</option>
+          <option value="last90">Derniers 90 jours</option>
+          <option value="last365">Derniers 365 jours</option>
+        </select>
+      </div>
+
       <div className="overflow-x-auto w-full bg-base-200/35 p-5 rounded-xl">
         {loading ? (
           <div className="w-full flex justify-center items-center h-[50vh]">
