@@ -341,3 +341,101 @@ export async function getReachedBudgets(email: string) {
     throw error;
   }
 }
+
+export async function getUserBudgetData(email: string) {
+  try {
+    const user = await prisma.user.findUnique({
+      where: { email },
+      include: { budgets: { include: { transactions: true } } },
+    });
+
+    if (!user) {
+      throw new Error("Utilisateur non trouvé.");
+    }
+
+    const data = user.budgets.map((budget) => {
+      const totalTransactionsAmount = budget.transactions.reduce(
+        (sum, transaction) => sum + transaction.amount,
+        0
+      );
+      return {
+        budgetName: budget.name,
+        totalBudgetAmount: budget.amount,
+        totalTransactionsAmount,
+      };
+    });
+
+    return data;
+  } catch (error) {
+    console.error(
+      "Erreur lors de la récupération des données budgétaires:",
+      error
+    );
+    throw error;
+  }
+}
+
+export const getLastTransactions = async (email: string) => {
+  try {
+    const transactions = await prisma.transaction.findMany({
+      where: {
+        budget: {
+          user: {
+            email: email,
+          },
+        },
+      },
+      orderBy: {
+        createdAt: "desc",
+      },
+      take: 10,
+      include: {
+        budget: {
+          select: {
+            name: true,
+          },
+        },
+      },
+    });
+
+    const transactionsWithBudgetName = transactions.map((transaction) => ({
+      ...transaction,
+      budgetName: transaction.budget?.name || "N/A",
+    }));
+
+    return transactionsWithBudgetName;
+  } catch (error) {
+    console.error(
+      "Erreur lors de la récupération des dernières transactions: ",
+      error
+    );
+    throw error;
+  }
+};
+
+export const getLastBudgets = async (email: string) => {
+  try {
+    const budgets = await prisma.budget.findMany({
+      where: {
+        user: {
+          email,
+        },
+      },
+      orderBy: {
+        createdAt: "desc",
+      },
+      take: 3,
+      include: {
+        transactions: true,
+      },
+    });
+
+    return budgets;
+  } catch (error) {
+    console.error(
+      "Erreur lors de la récupération des derniers budgets: ",
+      error
+    );
+    throw error;
+  }
+};
