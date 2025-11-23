@@ -342,6 +342,7 @@ export async function getReachedBudgets(email: string) {
   }
 }
 
+// recuperer les donnees budgétaires d'un utilisateur pour le graphique
 export async function getUserBudgetData(email: string) {
   try {
     const user = await prisma.user.findUnique({
@@ -374,7 +375,7 @@ export async function getUserBudgetData(email: string) {
     throw error;
   }
 }
-
+// recuperer les 10 dernieres transactions d'un utilisateur
 export const getLastTransactions = async (email: string) => {
   try {
     const transactions = await prisma.transaction.findMany({
@@ -412,7 +413,7 @@ export const getLastTransactions = async (email: string) => {
     throw error;
   }
 };
-
+// recuperer les 3 derniers budgets d'un utilisateur
 export const getLastBudgets = async (email: string) => {
   try {
     const budgets = await prisma.budget.findMany({
