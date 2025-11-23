@@ -3,6 +3,8 @@
 import { useUser } from "@clerk/nextjs";
 import { useEffect, useState } from "react";
 import {
+  getLastBudgets,
+  getLastTransactions,
   getReachedBudgets,
   getTotalTransactionAmount,
   getTotalTransactionCount,
@@ -19,6 +21,7 @@ import {
   BarChart,
   CartesianGrid,
   Legend,
+  ResponsiveContainer,
   Tooltip,
   XAxis,
   YAxis,
@@ -32,7 +35,9 @@ const page = () => {
   const [reachedBudgetsRatio, setReachedBudgetsRatio] = useState<string | null>(
     null
   );
-  const [chartData, setChartData] = useState<any[]>([]);
+  const [budgetData, setBudgetData] = useState<any[]>([]);
+  const [transactions, setTransactions] = useState<Transaction[]>([]);
+  const [budgets, setBudgets] = useState<Budget[]>([]);
 
   const fetchData = async () => {
     setIsLoading(true);
@@ -42,12 +47,15 @@ const page = () => {
         const amount = await getTotalTransactionAmount(email);
         const count = await getTotalTransactionCount(email);
         const reachedBudgets = await getReachedBudgets(email);
-        const data = await getUserBudgetData(email); // Assuming this function fetches data for the chart
-
+        const budgetsData = await getUserBudgetData(email);
+        const lastTransactions = await getLastTransactions(email);
+        const lastBudgets = await getLastBudgets(email);
         setTotalAmount(amount);
         setTotalCount(count);
         setReachedBudgetsRatio(reachedBudgets);
-        setChartData(data);
+        setBudgetData(budgetsData);
+        setTransactions(lastTransactions);
+        setBudgets(lastBudgets);
         setIsLoading(false);
       }
     } catch (error) {
@@ -106,24 +114,65 @@ const page = () => {
             </div>
           </div>
 
-          <BarChart
-            style={{
-              width: "100%",
-              maxWidth: "700px",
-              maxHeight: "70vh",
-              aspectRatio: 1.618,
-            }}
-            responsive
-            data={chartData}
-          >
-            <CartesianGrid strokeDasharray="3 3" />
-            <XAxis dataKey="budgetName" />
-            <YAxis width="auto" dataKey="totalBudgetAmount" />
-            <Tooltip />
-            <Legend />
-            <Bar dataKey="totalBudgetAmount" fill="#8884d8" />
-            <Bar dataKey="totalTransactionsAmount" fill="#82ca9d" />
-          </BarChart>
+          <div className="w-full md:flex mt-4">
+            <div className="roundex-xl md:w-2/3">
+              <div className="border-2 border-base-300 p-5 rounded-xl">
+                <h3 className="text-lg font-semibold mb-3">
+                  Statistiques ( en € )
+                </h3>
+                <ResponsiveContainer height={250} width="100%">
+                  <BarChart width={730} height={250} data={budgetData}>
+                    <CartesianGrid vertical={false} strokeDasharray="3 3" />
+                    <XAxis dataKey="budgetName" />
+                    <YAxis />
+
+                    <Tooltip />
+
+                    <Bar
+                      name="Budget"
+                      dataKey="totalBudgetAmount"
+                      fill="#EF9FBC"
+                      radius={[10, 10, 0, 0]}
+                    />
+
+                    <Bar
+                      name="Dépensé"
+                      dataKey="totalTransactionsAmount"
+                      fill="#EEAF3A"
+                      radius={[10, 10, 0, 0]}
+                    />
+                  </BarChart>
+                </ResponsiveContainer>
+              </div>
+
+              <div className="mt-4 border-2 border-base-300 p-5 rounded-xl">
+                <h3 className="text-lg font-semibold  mb-3">
+                  Derniers Transacttions
+                </h3>
+                <ul className="divide-y divide-base-300">
+                  {transactions.map((transaction) => (
+                    <TransactionItem
+                      key={transaction.id}
+                      transaction={transaction}
+                    ></TransactionItem>
+                  ))}
+                </ul>
+              </div>
+            </div>
+
+            <div className="md:w-1/3 ml-4">
+              <h3 className="text-lg font-semibold my-4 md:mb-4 md:mt-0">
+                Derniers Budgets
+              </h3>
+              <ul className="grid grid-cols-1 gap-4">
+                {budgets.map((budget) => (
+                  <Link href={`/manage/${budget.id}`} key={budget.id}>
+                    <BudgetItem budget={budget} enableHover={1}></BudgetItem>
+                  </Link>
+                ))}
+              </ul>
+            </div>
+          </div>
         </div>
       )}
     </Wrapper>
